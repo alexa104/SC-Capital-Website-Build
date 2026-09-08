@@ -1,0 +1,389 @@
+/* ============================================================
+   SC Capital — Design > Custom CSS
+   Paste this in full. Section-position numbers (nth-of-type)
+   assume the homepage build order in content/homepage.md:
+     1 Hero · 2 Who We Serve · 3 Services · 4 Approach & Philosophy
+     5 The SC Capital Difference · 6 Positioning Strip
+     7 Our Expertise · 8 Insights · 9 Closing CTA
+   If your actual order differs, update the numbers below to match
+   (see docs/SITEMAP.md).
+   ============================================================ */
+
+/* ---- Brand tokens ---- */
+:root {
+  --sc-ink: #4F6B62;
+  --sc-ink-muted: #7B988F;
+  --sc-line: #E3D9C6;
+  --sc-gold: #D2A636;
+  --sc-ember: #E18C6B;
+  --sc-teal: #7B988F;
+  --sc-sand: #E0C29E;
+}
+
+/* ---- Sticky header — fixed light-mode colors, not theme
+     tokens, so the header always matches the logo's own
+     background and stays consistent in both light and dark mode ---- */
+#header {
+  background: #FCF5EA;
+  border-bottom: 1px solid #E3D9C6;
+}
+/* Nav link text — also fixed, same reasoning as the header
+   background above. #header a is broad on purpose; if it also
+   catches the logo link or a header button on your template,
+   narrow it to the real nav-link class (Inspect Element on your
+   live header to find it, e.g. .header-nav-item a). */
+#header a { color: #4F6B62; }
+#header a:hover { color: #E18C6B; }
+
+/* ---- Hero = section 1: dark gradient overlay on the photo ---- */
+.page-section:nth-of-type(1) {
+  position: relative;
+  overflow: hidden;
+}
+.page-section:nth-of-type(1)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    160deg,
+    rgba(79, 107, 98, 0.55) 0%,
+    rgba(225, 140, 107, 0.28) 55%,
+    rgba(79, 107, 98, 0.60) 100%
+  );
+}
+
+/* ---- Services = section 3: heavier top border + colored
+     card accents, replacing a flat background tint ---- */
+.page-section:nth-of-type(3) {
+  border-top: 3px solid var(--sc-ember);
+}
+.page-section:nth-of-type(3) .fe-block:nth-of-type(1) { border-top: 3px solid var(--sc-ember); }
+.page-section:nth-of-type(3) .fe-block:nth-of-type(2) { border-top: 3px solid var(--sc-gold); }
+.page-section:nth-of-type(3) .fe-block:nth-of-type(3) { border-top: 3px solid var(--sc-teal); }
+
+/* ---- Approach & Philosophy = section 4: differentiated the
+     same way as Services (section 3) — a heavy top border in a
+     distinct accent color, not a background overlay ---- */
+.page-section:nth-of-type(4) {
+  border-top: 3px solid var(--sc-gold);
+  border-bottom: 1px solid var(--sc-line);
+}
+
+/* ---- The SC Capital Difference = section 5: colored top-accent
+     per card, hover lift, and a staggered fade-in — this replaces
+     the "Compare to an In-House CIO" link as the section's visual
+     interest. Assumes one .fe-block per card; if your layout uses
+     a single block for the whole 4-up grid, target its child
+     elements instead. ---- */
+.page-section:nth-of-type(5) .fe-block {
+  padding-top: 20px;
+  transition: opacity .6s ease var(--sc-delay, 0s), transform .35s ease, box-shadow .25s ease;
+}
+.page-section:nth-of-type(5) .fe-block:nth-of-type(1) { border-top: 2px solid var(--sc-gold); --sc-delay: .05s; }
+.page-section:nth-of-type(5) .fe-block:nth-of-type(2) { border-top: 2px solid var(--sc-ember); --sc-delay: .15s; }
+.page-section:nth-of-type(5) .fe-block:nth-of-type(3) { border-top: 2px solid #B7DDD5; --sc-delay: .25s; }
+.page-section:nth-of-type(5) .fe-block:nth-of-type(4) { border-top: 2px solid var(--sc-sand); --sc-delay: .35s; }
+.page-section:nth-of-type(5) .fe-block:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-section:nth-of-type(5) .fe-block:hover { transform: none; }
+}
+
+/* ---- The SC Capital Difference = section 5, and the closing
+     "Submit an RFP" band = section 9: FIXED dark background,
+     not the theme-linked --sc-ink token. If you point a dark
+     section's text at --sc-ink and its background at --sc-ink
+     too, the dark-mode override below flips --sc-ink to a
+     light color and the text becomes illegible against its own
+     background. Hardcode both sides of this pairing instead. ---- */
+.page-section:nth-of-type(5),
+.page-section:nth-of-type(9) {
+  background: #4F6B62 !important;
+}
+.page-section:nth-of-type(5) *,
+.page-section:nth-of-type(9) * {
+  color: #FCF5EA;
+}
+.page-section:nth-of-type(5) h1, .page-section:nth-of-type(5) h2, .page-section:nth-of-type(5) h3,
+.page-section:nth-of-type(9) h1, .page-section:nth-of-type(9) h2, .page-section:nth-of-type(9) h3 {
+  color: #FCF5EA !important;
+}
+
+/* ---- Section 9's Form Block sits on its own light card, not
+     directly on the dark green — restore normal (dark) text
+     inside it, since the "* { color: #FCF5EA }" rule above would
+     otherwise make the form's own labels and typed text
+     illegible against the light card. .sqs-block-form is
+     Squarespace's real class for a Form Block; inspect your
+     actual markup (right-click > Inspect) if your template
+     wraps it differently. ---- */
+.page-section:nth-of-type(9) .sqs-block-form,
+.page-section:nth-of-type(9) .sqs-block-form * {
+  color: var(--sc-ink) !important;
+}
+.page-section:nth-of-type(9) .sqs-block-form {
+  background: #FCF5EA;
+  border-radius: 4px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 32px clamp(20px, 4vw, 40px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+.page-section:nth-of-type(9) .sqs-block-form input,
+.page-section:nth-of-type(9) .sqs-block-form textarea {
+  border: 1px solid var(--sc-line) !important;
+  border-radius: 2px;
+  background: #FFFFFF !important;
+}
+
+/* ---- Positioning Strip = section 6 ---- */
+.page-section:nth-of-type(6) .fe-block {
+  border-top: 1px solid var(--sc-line);
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+/* ---- Our Expertise = section 7: single centered card, not a
+     2-column grid. Border-top differentiates it the same way as
+     Services (ember) and Approach & Philosophy (gold) — here teal. ---- */
+.page-section:nth-of-type(7) {
+  border-top: 3px solid var(--sc-teal);
+  border-bottom: 1px solid var(--sc-line);
+}
+.page-section:nth-of-type(7) .fe-block {
+  max-width: 56ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---- Insights = section 8: same differentiation technique,
+     using sand as the fourth distinct accent color ---- */
+.page-section:nth-of-type(8) {
+  border-top: 3px solid var(--sc-sand);
+  border-bottom: 1px solid var(--sc-line);
+}
+
+/* ---- Scroll-reveal target (used by code-injection-footer.html) ---- */
+.sc-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.sc-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---- Who We Serve — animated word-cycle heading ---- */
+#sc-word-cycle {
+  display: inline-block;
+  font-style: italic;
+  color: var(--sc-ember);
+  transition: opacity .32s ease, transform .32s ease;
+  min-width: 1ch;
+}
+#sc-word-cycle.sc-word-swapping {
+  opacity: 0;
+  transform: translateY(8px);
+}
+@media (prefers-reduced-motion: reduce) {
+  #sc-word-cycle { transition: none; }
+}
+
+/* ============================================================
+   Light / Dark toggle
+   ============================================================ */
+
+/* ---- Dark mode token overrides ---- */
+:root[data-theme="dark"] {
+  --sc-ink: #F3ECDD;
+  --sc-ink-muted: #B7CBC3;
+  --sc-line: #37473F;
+  --sc-gold: #E3B94A;
+  --sc-ember: #E89A7A;
+  --sc-teal: #8FB0A6;
+  --sc-sand: #C9AD87;
+}
+:root[data-theme="dark"] body {
+  background: #1D2B27 !important;
+  color: var(--sc-ink) !important;
+}
+
+/* ---- Toggle button ---- */
+.sc-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  border: 1px solid var(--sc-line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--sc-ink-muted);
+  cursor: pointer;
+  margin-left: 14px;
+}
+
+/* ============================================================
+   Separate pages — shared dark hero header
+   (For Families, For Family Offices, How We Work With You, Our Team)
+   Fixed colors, not theme tokens, same reasoning as the homepage's
+   dark bands above being hardcoded rather than tied to --sc-ink.
+   ============================================================ */
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #3D5850 0%, #2A3F38 100%);
+  padding: clamp(56px, 9vh, 96px) 0 clamp(48px, 8vh, 72px);
+}
+.page-hero * { color: #FCF5EA !important; }
+.page-hero h1, .page-hero h2 { color: #FCF5EA !important; }
+.page-hero a { color: rgba(255, 255, 255, 0.75) !important; border-color: rgba(255, 255, 255, 0.3) !important; }
+
+/* Small uppercase label above a card's heading — shared by the
+   "For Families" page's blocks and the "How We Work With You"
+   page's engagement cards */
+.segment-label {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sc-ink-muted);
+  margin-bottom: 10px;
+}
+
+/* ============================================================
+   Page: For Families — stacked blocks
+   Sized to their own content, not forced into equal-height
+   cards like a grid would.
+   ============================================================ */
+.family-service-block {
+  border-top: 3px solid var(--fsb-accent, var(--sc-gold));
+  padding-top: 28px;
+  margin-top: 44px;
+}
+.family-service-block:first-child { margin-top: 0; }
+.family-service-block:nth-child(1) { --fsb-accent: var(--sc-gold); }
+.family-service-block:nth-child(2) { --fsb-accent: var(--sc-ember); }
+.family-service-block:nth-child(3) { --fsb-accent: var(--sc-teal); }
+/* Scoped to this page only — .segment-label above is shared with
+   the How-We-Work-With-You page's cards, whose small uppercase
+   label style should stay untouched */
+.family-service-block .segment-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 1.35rem;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--sc-ink);
+  margin-bottom: 12px;
+}
+.family-service-block .practice-label {
+  margin: 22px 0 10px;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--sc-ink-muted);
+}
+
+/* Dot-marker bullet list used on the For Families page (it uses
+   Code Blocks, not native Squarespace bullets like Services did) */
+.offer-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; max-width: 620px; }
+.offer-list li { font-size: 0.9rem; line-height: 1.4; color: var(--sc-ink-muted); padding-left: 14px; position: relative; }
+.offer-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 7px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--sc-ember);
+}
+
+/* ============================================================
+   Page: How We Work With You — three-up engagement cards
+   ============================================================ */
+.engagement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 40px); }
+.engagement-card { border-top: 3px solid var(--sc-gold); padding-top: 20px; }
+.engagement-card:nth-child(2) { border-top-color: var(--sc-ember); }
+.engagement-card:nth-child(3) { border-top-color: var(--sc-teal); }
+.engagement-card h3 { font-size: 1.15rem; margin-bottom: 10px; }
+.engagement-card p { margin: 0; font-size: 0.92rem; color: var(--sc-ink-muted); }
+@media (max-width: 860px) {
+  .engagement-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* ============================================================
+   Page: Our Team
+   ============================================================ */
+
+/* Stat row — only used on the Team page's hero */
+.team-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  padding-top: 36px;
+}
+.team-stat-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  color: var(--sc-gold) !important;
+}
+.team-stat-label { margin-top: 8px; font-size: 0.76rem; letter-spacing: 0.05em; }
+@media (max-width: 620px) {
+  .team-stats { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* Card grid — reflows automatically as you add more people */
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: clamp(28px, 4vw, 40px); }
+.team-photo {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
+  margin-bottom: 16px;
+}
+.team-name { font-size: 1.1rem; font-weight: 600; }
+.team-credentials { font-size: 0.8rem; font-weight: 400; color: var(--sc-ink-muted); margin-left: 6px; }
+.team-role { margin-top: 4px; font-size: 0.86rem; color: var(--sc-teal); }
+
+/* Open-role card — a dashed placeholder, distinct from the
+   gradient/initials placeholder used for real hires whose
+   photo just hasn't been added yet */
+.team-photo--open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px dashed var(--sc-line);
+  color: var(--sc-ink-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.5;
+}
+.team-card--open .team-name { color: var(--sc-ink-muted); font-weight: 500; }
+
+/* Placeholder avatar for anyone without a headshot yet —
+   swap for a real Image Block once a photo is supplied */
+.team-photo--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, var(--sc-ink), var(--sc-teal));
+  color: #FCF5EA;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 1.8rem;
+}
